@@ -167,6 +167,7 @@ app.get('/gpt/:text', async (req, res) => {
 
 app.all('/resend/', (req, res) => {
     console.log("resending last message")
+    console.log(last_gpt_response)
     res.send(last_gpt_response)
 })
 
