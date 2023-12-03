@@ -28,6 +28,7 @@ if (!MODEL_NAME) {
 const MAX_LENGTH = 399
 let file_context = "You are a helpful Twitch Chatbot."
 let last_user_message = ""
+let last_gpt_response = ""
 
 const messages = [
     {role: "system", content: "You are a helpful Twitch Chatbot."}
@@ -120,6 +121,7 @@ app.get('/gpt/:text', async (req, res) => {
             } else {
                 sliced_agent_response = agent_response
             }
+            
             res.send(sliced_agent_response)
         } else {
             res.send("Something went wrong. Try again later!")
@@ -154,12 +156,18 @@ app.get('/gpt/:text', async (req, res) => {
             } else {
                 sliced_agent_response = agent_response
             }
+            last_gpt_response = sliced_agent_response
             res.send(sliced_agent_response)
         } else {
             res.send("Something went wrong. Try again later!")
         }
     }
 
+})
+
+app.all('/resend/', (req, res) => {
+    console.log("resending last message")
+    res.send(last_gpt_response)
 })
 
 app.all('/continue/', (req, res) => {
